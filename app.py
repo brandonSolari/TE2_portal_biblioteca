@@ -9,6 +9,12 @@ usuarios = {
     "diego": "3333"
 }
 
+lista_libros = [
+    {"titulo": "Python desde cero", "autor": "Juan Pérez", "disponibles": 4},
+    {"titulo": "Desarrollo Web", "autor": "María López", "disponibles": 2},
+    {"titulo": "Inteligencia Artificial", "autor": "Pedro García", "disponibles": 0}
+]
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -29,8 +35,8 @@ def login():
     return render_template('login.html')
 
 @app.route('/libros')
-def libros():
-    return render_template('libros.html')
+def libros(): # La función vuelve a llamarse 'libros'
+    return render_template('libros.html', libros=lista_libros)
 
 @app.route('/perfil')
 def perfil():
