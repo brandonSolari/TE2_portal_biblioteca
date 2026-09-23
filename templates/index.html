@@ -3,7 +3,7 @@
 {% block content %}
     <h2>Página Principal</h2>
 
-    <!-- Mensajes flash por si borras la cookie -->
+    <!-- Mensajes flash (muestra cuando cierras sesión o borras la cookie) -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
@@ -12,7 +12,7 @@
         {% endif %}
     {% endwith %}
 
-    <!-- Validación de la cookie solicitada por el examen -->
+    <!-- Validación de la cookie -->
     {% if ultimo_usuario %}
         <p>Último usuario registrado: {{ ultimo_usuario }}.</p>
         <p><a href="{{ url_for('eliminar_cookie') }}">Eliminar último usuario (cookie)</a></p>

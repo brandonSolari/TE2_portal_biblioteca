@@ -55,9 +55,10 @@ def perfil():
 @app.route('/logout')
 def logout():
     session.pop('usuario', None)
+    flash('Sesión cerrada correctamente.', 'success')
     return redirect(url_for('index'))
 
-#eliminar la cookie
+
 @app.route('/eliminar_cookie')
 def eliminar_cookie():
     resp = make_response(redirect(url_for('index')))
