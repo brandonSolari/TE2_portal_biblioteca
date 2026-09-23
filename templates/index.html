@@ -14,7 +14,7 @@
 
     <!-- Validación de la cookie solicitada por el examen -->
     {% if ultimo_usuario %}
-        <p><strong>Último usuario registrado: {{ ultimo_usuario }}.</strong></p>
+        <p>Último usuario registrado: {{ ultimo_usuario }}.</p>
         <p><a href="{{ url_for('eliminar_cookie') }}">Eliminar último usuario (cookie)</a></p>
     {% else %}
         <p>Bienvenido al Portal de Biblioteca.</p>
