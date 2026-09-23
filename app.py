@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, make_response
 
 app = Flask(__name__)
 app.secret_key = 'clave_secreta_examen'
@@ -15,27 +15,33 @@ lista_libros = [
     {"titulo": "Inteligencia Artificial", "autor": "Pedro García", "disponibles": 0}
 ]
 
+
+
 @app.route('/')
 def index():
-    return render_template('index.html')
+    ultimo_usuario = request.cookies.get('ultimo_usuario')
+    return render_template('index.html', ultimo_usuario=ultimo_usuario)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         user = request.form.get('usuario')
         password = request.form.get('contrasena')
-        # Verificar si el usuario existe y la contraseña coincide
+        
         if user in usuarios and usuarios[user] == password:
             session['usuario'] = user  
             flash(f'¡Bienvenido, {user}!', 'success')  
-            return redirect(url_for('libros'))  
+            
+            resp = make_response(redirect(url_for('libros')))
+            resp.set_cookie('ultimo_usuario', user)
+            return resp
         else:
             flash('Usuario o contraseña incorrectos.', 'danger') 
 
     return render_template('login.html')
 
 @app.route('/libros')
-def libros(): # La función vuelve a llamarse 'libros'
+def libros():
     return render_template('libros.html', libros=lista_libros)
 
 @app.route('/perfil')
@@ -50,6 +56,14 @@ def perfil():
 def logout():
     session.pop('usuario', None)
     return redirect(url_for('index'))
+
+#eliminar la cookie
+@app.route('/eliminar_cookie')
+def eliminar_cookie():
+    resp = make_response(redirect(url_for('index')))
+    resp.set_cookie('ultimo_usuario', '', expires=0) # Borra la cookie expirándola al instante
+    flash('La cookie de último usuario ha sido eliminada.', 'info')
+    return resp
 
 if __name__ == '__main__':
     app.run(debug=True)

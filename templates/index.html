@@ -1,6 +1,22 @@
 {% extends "base.html" %}
+
 {% block content %}
-    <h2>Perfil de Usuario</h2>
-    <p>Bienvenido al sistema, <strong>{{ usuario }}</strong>.</p>
-    <p>Esta es la información del usuario autenticado.</p>
+    <h2>Página Principal</h2>
+
+    <!-- Mensajes flash por si borras la cookie -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p style="color: blue;">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- Validación de la cookie solicitada por el examen -->
+    {% if ultimo_usuario %}
+        <p><strong>Último usuario registrado: {{ ultimo_usuario }}.</strong></p>
+        <p><a href="{{ url_for('eliminar_cookie') }}">Eliminar último usuario (cookie)</a></p>
+    {% else %}
+        <p>Bienvenido al Portal de Biblioteca.</p>
+    {% endif %}
 {% endblock %}
